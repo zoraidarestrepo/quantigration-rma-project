@@ -189,3 +189,112 @@ ORDER BY r.RMAID;
 
 Key insight:
 The integrated relational model enables full traceability—critical for quality control, customer support, and operational decision-making.
+
+### Results/Findings
+
+1. Customer Purchase & Return Patterns
+
+- Customers with higher purchasing activity naturally generated more RMAs.
+- No abnormal return behavior was found from any single customer.
+- The customer-to-order and order-to-RMA mapping showed strong data integrity, with no orphaned records.
+
+Finding:
+Return volume is proportional to customer purchasing frequency, suggesting returns are expected rather than alarming.
+
+2. Product-Level Return Trends
+
+- A small subset of products accounted for the majority of RMAs.
+- Frequent return reasons for these products included hardware failures, connectivity issues, or performance problems.
+- Some products consistently had short order-to-return timeframes, indicating potential quality concerns.
+
+Finding:
+A “Pareto pattern” exists—focusing on a few high-return products could significantly reduce overall RMA volume.
+
+3. Return Reasons Breakdown
+
+Top return reasons included:
+- Defective component
+- Performance issues
+- Wrong product ordered
+- Non-technical return reasons (e.g., wrong model ordered) revealed user-experience gaps in product descriptions.
+
+Finding:
+A significant portion of returns are preventable through clearer product information and customer guidance.
+
+4. RMA Status Insights
+
+- Most RMAs were successfully resolved (Closed).
+- Open and In-Progress RMAs clustered around certain dates, indicating operational workload peaks.
+- No abnormal backlog was observed.
+
+Finding:
+The return workflow is functioning efficiently, but staffing or process adjustments may smooth peak periods.
+
+5. Time Between Order & Return
+
+- Some products had very short return intervals, suggesting immediate dissatisfaction or early failures.
+- Others showed long intervals, which may reflect slow issue detection or delayed customer action.
+
+Finding:
+Time-based trends highlight which products may require engineering or customer support review.
+
+6. Full Customer → Order → RMA Lifecycle
+
+The integrated relationship analysis showed:
+- Clean relational structure
+- Predictable customer patterns
+- Clear traceability for every return
+- No mismatched or inconsistent records were detected.
+
+Finding:
+The relational design supports strong reporting and decision-making with full end-to-end traceability.
+
+### Recommendations
+
+Based on the analysis of the Quantigration RMA system, the following recommendations can improve product quality, customer satisfaction, and return workflow efficiency:
+
+**Improve Product Documentation**
+Clarify product specifications and compatibility to reduce preventable returns such as “wrong model ordered.”
+
+**Investigate High-Return Products**
+Focus engineering and QA efforts on the small subset of products responsible for most RMAs.
+
+**Enhance Customer Support Guidance**
+Provide troubleshooting steps or setup instructions to reduce returns caused by user errors or misunderstandings.
+
+**Monitor RMA Status Peaks**
+Consider adjusting staffing or workflow automation during high-volume return periods.
+
+**Track Early-Return Patterns**
+Prioritize review of products with consistently short order-to-return intervals to detect early defects or dissatisfaction.
+
+### Limitations
+
+Limited dataset scope: Analysis is based only on the available CSV files; broader operational data (inventory, support tickets, product specs) was not included.
+
+- No time-series depth: Order and RMA dates are present, but long-term historical trends are not available.
+- Missing product details: Product metadata (categories, versions, suppliers) is limited, reducing granularity in product-level insights.
+- Assumes accurate source data: The analysis relies on the assumption that uploaded CSVs contain no hidden errors beyond what was cleaned.
+- No customer demographic context: Customer profiles lack deeper attributes (location, segment), limiting behavioral analysis.
+
+### References
+
+MySQL Documentation. MySQL 8.0 Reference Manual. Oracle Corporation.
+https://dev.mysql.com/doc/
+
+W3Schools. SQL Tutorial.
+https://www.w3schools.com/sql/
+
+IBM Cloud Education. What Is a Relational Database?
+https://www.ibm.com/cloud/learn/relational-databases
+
+Tableau. What Is Data Analysis?
+https://www.tableau.com/learn/articles/what-is-data-analysis
+
+Kaggle. Data Cleaning Techniques & Best Practices.
+https://www.kaggle.com/learn/data-cleaning
+
+Microsoft Learn. Introduction to Data Modeling.
+https://learn.microsoft.com/en-us/power-bi/transform-model/data-modeling
+
+Stack Overflow Documentation (Archived). SQL Best Practices & Query Patterns.
