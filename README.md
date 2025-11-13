@@ -45,6 +45,7 @@ SQL Scripts – Schema creation, joins, updates, inserts, deletes, and views [Do
 - Verified row counts and table relationships after loading
 
 ### Exploratory Data Analysis
+
 The Exploratory Data Analysis phase focused on understanding the structure, relationships, and patterns within the Quantigration RMA datasets (Customers, Orders, and RMA). This analysis helped validate data quality, identify trends, and prepare for deeper SQL-based insights.
 
 - Reviewed dataset structure and verified foreign key alignment
@@ -53,3 +54,70 @@ The Exploratory Data Analysis phase focused on understanding the structure, rela
 - Explored return trends by product, customer, and status
 - Validated relationships using SQL joins (Customers → Orders → RMA)
 
+### Data Analysis
+
+1. Customer Order Behavior
+
+Analysis showed clear patterns in how customers interact with the company:
+
+- Some customers place multiple orders, while others have only a single transaction.
+- High-volume customers tend to generate more RMAs, suggesting a direct relationship between order frequency and return frequency.
+- Customer information was complete and correctly mapped to Orders, ensuring reliable trend analysis.
+
+Key insight:
+Customers with more frequent purchase activity naturally exhibit higher return counts, indicating a proportional relationship rather than a quality issue.
+
+2. Product Return Trends
+
+By joining Orders and RMA records, product-level return patterns were identified:
+
+- Certain products appeared more frequently in RMA records than others.
+- Return reasons varied by product, suggesting differences in quality, customer expectation, or use cases.
+- Products with repeated similar return reasons may require quality review or updated customer instructions.
+
+Key insight:
+A small subset of products accounted for a large share of RMAs, following a classic “80/20” pattern—valuable for targeting improvements.
+
+3. Return Reasons Analysis
+
+Return reasons provided insight into why customers initiate RMAs:
+
+- Common themes included defective components, performance issues, and incorrect orders.
+- Some return reasons were operational (e.g., “ordered wrong model”), while others pointed to technical failure.
+- Standardizing return reasons helped simplify classification and reporting.
+
+Key insight:
+Many returns were preventable (incorrect orders, misunderstanding of product specs), suggesting opportunities for improved product descriptions or customer guidance.
+
+4. RMA Status Workflow
+
+The RMA Status field (“Open,” “Closed,” “In Progress,” etc.) revealed operational insights:
+
+- Most RMAs progressed through the workflow as expected.
+- Open and In-Progress RMAs clustered around certain dates, indicating workload peaks.
+- Closed RMAs were consistent with proper processing procedures.
+
+Key insight:
+Tracking RMA status over time can help identify bottlenecks in the return process and improve turnaround time.
+
+5. Time Between Order and Return
+
+The time interval between order date and return date highlighted potential issues:
+
+- Very short return intervals may signal product quality issues or customer dissatisfaction.
+- Longer intervals often indicated slow progression to identifying a defect or delayed customer action.
+- Patterns varied by product type.
+
+Key insight:
+Products with consistently short order-to-return times may require deeper investigation for underlying defects.
+
+6. End-to-End Relationship Analysis
+
+By linking Customers → Orders → RMA, the complete return behavior could be evaluated:
+
+- Identified which customers generated the most RMAs.
+- Mapped which products were most frequently involved in returns.
+- Helped determine whether returns stemmed from isolated events or persistent issues tied to specific customers, orders, or products.
+
+Key insight:
+The integrated relational model enables full traceability—critical for quality control, customer support, and operational decision-making.
