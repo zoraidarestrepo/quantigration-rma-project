@@ -1,1 +1,153 @@
+1. Row Counts per Table
+
+Check that each dataset loaded correctly.
+
+```sql
+SELECT COUNT(*) AS TotalCustomers FROM Customers;
+SELECT COUNT(*) AS TotalOrders FROM Orders;
+SELECT COUNT(*) AS TotalRMA FROM RMA;
+```
+
+2. Verify Primary Key Uniqueness
+
+Ensure there are no duplicate IDs.
+
+```sql
+-- Customers
+SELECT CustomerID, COUNT(*) AS Count
+FROM Customers
+GROUP BY CustomerID
+HAVING COUNT(*) > 1;
+
+-- Orders
+SELECT OrderID, COUNT(*) AS Count
+FROM Orders
+GROUP BY OrderID
+HAVING COUNT(*) > 1;
+
+-- RMA
+SELECT RMAID, COUNT(*) AS Count
+FROM RMA
+GROUP BY RMAID
+HAVING COUNT(*
+) > 1;
+```
+
+3. Check Foreign Key Integrity
+
+Ensure Orders map to valid Customers and RMAs map to valid Orders.
+
+```sql
+-- Orders referencing missing customers
+SELECT *
+FROM Orders o
+LEFT JOIN Customers c ON o.CustomerID = c.CustomerID
+WHERE c.CustomerID IS NULL;
+
+-- RMA referencing missing orders
+SELECT *
+FROM RMA r
+LEFT JOIN Orders o ON r.OrderID = o.OrderID
+WHERE o.OrderID IS NULL;
+```
+
+4. Order and RMA Date Ranges
+
+Review timeline consistency.
+
+```sql
+SELECT MIN(OrderDate) AS EarliestOrder, MAX(OrderDate) AS LatestOrder
+FROM Orders;
+
+SELECT MIN(ReturnDate) AS EarliestRMA, MAX(ReturnDate) AS LatestRMA
+FROM RMA;
+```
+
+5. Orders per Customer
+
+Identify purchasing activity and high-volume customers.
+
+```sql
+SELECT 
+    c.CustomerID,
+    CONCAT(c.FirstName, ' ', c.LastName) AS CustomerName,
+    COUNT(o.OrderID) AS TotalOrders
+FROM Customers c
+LEFT JOIN Orders o ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerID, CustomerName
+ORDER BY TotalOrders DESC;
+```
+
+6. Returns per Product
+
+Understand which products are returned most often.
+
+```sql
+SELECT 
+    o.ProductName,
+    COUNT(r.RMAID) AS TotalReturns
+FROM Orders o
+JOIN RMA r ON o.OrderID = r.OrderID
+GROUP BY o.ProductName
+ORDER BY TotalReturns DESC;
+```
+
+7. Return Reasons Frequency
+
+Analyze trends in why customers return products.
+
+```sql
+SELECT 
+    ReturnReason,
+    COUNT(*) AS Frequency
+FROM RMA
+GROUP BY ReturnReason
+ORDER BY Frequency DESC;
+```
+
+8. RMA Status Breakdown
+
+Quick snapshot of processing stages.
+
+```sql
+SELECT 
+    Status,
+    COUNT(*) AS Total
+FROM RMA
+GROUP BY Status
+ORDER BY Total DESC;
+```
+
+9. Time Between Order and RMA
+
+Evaluate customer return behavior.
+
+```sql
+SELECT 
+    r.RMAID,
+    o.ProductName,
+    DATEDIFF(r.ReturnDate, o.OrderDate) AS DaysBetween
+FROM RMA r
+JOIN Orders o ON r.OrderID = o.OrderID
+ORDER BY DaysBetween DESC;
+```
+
+10. Full Customer–Order–RMA Relationship
+
+High-level view of all connected data.
+
+```sql
+SELECT
+    r.RMAID,
+    r.Status,
+    r.ReturnReason,
+    o.OrderID,
+    o.ProductName,
+    c.CustomerID,
+    CONCAT(c.FirstName, ' ', c.LastName) AS CustomerName
+FROM RMA r
+JOIN Orders o ON r.OrderID = o.OrderID
+JOIN Customers c ON o.CustomerID = c.CustomerID
+ORDER BY r.RMAID;
+```
 
