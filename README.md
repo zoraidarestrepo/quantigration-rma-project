@@ -1,4 +1,4 @@
-[QuantigrationRMA_fromCSV.sql](https://github.com/user-attachments/files/23535775/QuantigrationRMA_fromCSV.sql)# Quantigration RMA
+# Quantigration RMA
 
 ### Project Overview
 
