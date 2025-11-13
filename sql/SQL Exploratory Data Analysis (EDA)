@@ -1,6 +1,5 @@
 Check that each dataset loaded correctly.
 
-
 SELECT COUNT(*) AS TotalCustomers FROM Customers;
 SELECT COUNT(*) AS TotalOrders FROM Orders;
 SELECT COUNT(*) AS TotalRMA FROM RMA;
