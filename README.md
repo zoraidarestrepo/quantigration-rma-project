@@ -147,7 +147,7 @@ The time interval between order date and return date highlighted potential issue
 - Longer intervals often indicated slow progression to identifying a defect or delayed customer action.
 - Patterns varied by product type.
 
-```sql
+```SQL
 SELECT 
     r.RMAID,
     o.ProductName,
