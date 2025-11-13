@@ -64,6 +64,17 @@ Analysis showed clear patterns in how customers interact with the company:
 - High-volume customers tend to generate more RMAs, suggesting a direct relationship between order frequency and return frequency.
 - Customer information was complete and correctly mapped to Orders, ensuring reliable trend analysis.
 
+```sql
+SELECT 
+    c.CustomerID,
+    CONCAT(c.FirstName, ' ', c.LastName) AS CustomerName,
+    COUNT(o.OrderID) AS TotalOrders
+FROM Customers c
+LEFT JOIN Orders o ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerID, CustomerName
+ORDER BY TotalOrders DESC;
+```
+
 Key insight:
 Customers with more frequent purchase activity naturally exhibit higher return counts, indicating a proportional relationship rather than a quality issue.
 
@@ -74,6 +85,16 @@ By joining Orders and RMA records, product-level return patterns were identified
 - Certain products appeared more frequently in RMA records than others.
 - Return reasons varied by product, suggesting differences in quality, customer expectation, or use cases.
 - Products with repeated similar return reasons may require quality review or updated customer instructions.
+
+```sql
+SELECT 
+    o.ProductName,
+    COUNT(r.RMAID) AS TotalReturns
+FROM Orders o
+JOIN RMA r ON o.OrderID = r.OrderID
+GROUP BY o.ProductName
+ORDER BY TotalReturns DESC;
+```
 
 Key insight:
 A small subset of products accounted for a large share of RMAs, following a classic “80/20” pattern—valuable for targeting improvements.
@@ -86,6 +107,15 @@ Return reasons provided insight into why customers initiate RMAs:
 - Some return reasons were operational (e.g., “ordered wrong model”), while others pointed to technical failure.
 - Standardizing return reasons helped simplify classification and reporting.
 
+```sql
+SELECT 
+    ReturnReason,
+    COUNT(*) AS Frequency
+FROM RMA
+GROUP BY ReturnReason
+ORDER BY Frequency DESC;
+```
+
 Key insight:
 Many returns were preventable (incorrect orders, misunderstanding of product specs), suggesting opportunities for improved product descriptions or customer guidance.
 
@@ -96,6 +126,15 @@ The RMA Status field (“Open,” “Closed,” “In Progress,” etc.) reveale
 - Most RMAs progressed through the workflow as expected.
 - Open and In-Progress RMAs clustered around certain dates, indicating workload peaks.
 - Closed RMAs were consistent with proper processing procedures.
+
+```sql
+SELECT 
+    Status,
+    COUNT(*) AS Total
+FROM RMA
+GROUP BY Status
+ORDER BY Total DESC;
+```
 
 Key insight:
 Tracking RMA status over time can help identify bottlenecks in the return process and improve turnaround time.
@@ -108,6 +147,18 @@ The time interval between order date and return date highlighted potential issue
 - Longer intervals often indicated slow progression to identifying a defect or delayed customer action.
 - Patterns varied by product type.
 
+```sql
+SELECT 
+    r.RMAID,
+    o.ProductName,
+    o.OrderDate,
+    r.ReturnDate,
+    DATEDIFF(r.ReturnDate, o.OrderDate) AS DaysBetween
+FROM RMA r
+JOIN Orders o ON r.OrderID = o.OrderID
+ORDER BY DaysBetween DESC;
+```
+
 Key insight:
 Products with consistently short order-to-return times may require deeper investigation for underlying defects.
 
@@ -118,6 +169,23 @@ By linking Customers → Orders → RMA, the complete return behavior could be e
 - Identified which customers generated the most RMAs.
 - Mapped which products were most frequently involved in returns.
 - Helped determine whether returns stemmed from isolated events or persistent issues tied to specific customers, orders, or products.
+
+```sql
+SELECT
+    r.RMAID,
+    r.Status,
+    r.ReturnReason,
+    r.ReturnDate,
+    o.OrderID,
+    o.ProductName,
+    o.OrderDate,
+    c.CustomerID,
+    CONCAT(c.FirstName, ' ', c.LastName) AS CustomerName
+FROM RMA r
+JOIN Orders o ON r.OrderID = o.OrderID
+JOIN Customers c ON o.CustomerID = c.CustomerID
+ORDER BY r.RMAID;
+```
 
 Key insight:
 The integrated relational model enables full traceability—critical for quality control, customer support, and operational decision-making.
